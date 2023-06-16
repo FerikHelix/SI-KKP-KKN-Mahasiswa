@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:si_kkp_kkn/constant/color.dart';
+import 'package:si_kkp_kkn/screen/homescreen.dart';
 import 'package:si_kkp_kkn/services/auth.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -223,7 +224,11 @@ class _RegisterFormState extends State<RegisterForm> {
     // biar bisa pakai firestore offline
     _firestoreSendDataDiriMahasiswa();
     signUpWithEmail(_emailController.text, _passwordController.text)
-        .then((value) => (value == "success"));
+        .then((_) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => Homescreen(),
+            )));
   }
 
   void _firestoreSendDataDiriMahasiswa() {
