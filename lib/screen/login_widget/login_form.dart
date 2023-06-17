@@ -4,6 +4,7 @@ import 'package:si_kkp_kkn/constant/color.dart';
 import 'package:si_kkp_kkn/screen/register_screen.dart';
 import 'package:si_kkp_kkn/screen/register_widget/register_form.dart';
 import 'package:si_kkp_kkn/services/auth.dart';
+import 'package:si_kkp_kkn/util/utility.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -100,8 +101,8 @@ class _LoginFormState extends State<LoginForm> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
                         )),
-                    onPressed: () => signInWithEmail(
-                        _emailController.text, _passwordController.text),
+                    onPressed: () => signInWithEmail(_emailController.text,
+                        _passwordController.text, context),
                     child: Text(
                       "Login",
                       style: TextStyle(

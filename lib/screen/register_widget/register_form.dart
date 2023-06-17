@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:si_kkp_kkn/constant/color.dart';
 import 'package:si_kkp_kkn/screen/homescreen.dart';
 import 'package:si_kkp_kkn/services/auth.dart';
+import 'package:si_kkp_kkn/util/utility.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -154,7 +157,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             borderSide: const BorderSide(color: elementColor)),
                         prefixIconColor: elementColor,
                         prefixIcon: const Icon(Icons.email_outlined),
-                        hintText: "Email"),
+                        hintText: "e.g nim@global.ac.id"),
                   ),
                 ),
                 Padding(
@@ -219,16 +222,25 @@ class _RegisterFormState extends State<RegisterForm> {
     });
   }
 
-  void _daftarMahasiswaBaruHandler() {
+  void _daftarMahasiswaBaruHandler() async {
     // To ilham, jangan ada data yang di .then / await
     // biar bisa pakai firestore offline
     _firestoreSendDataDiriMahasiswa();
-    signUpWithEmail(_emailController.text, _passwordController.text)
-        .then((_) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => Homescreen(),
-            )));
+    final retValue = await signUpWithEmail(
+        _emailController.text, _passwordController.text, context);
+
+    if (retValue == "success") {
+      await firebaseAuth.currentUser!
+          .updateDisplayName(_namaController.text.trim());
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const Homescreen(),
+          ));
+      snackBarNotifyOperationSuccess(
+          context, "Berhasil mendaftarkan mahasiswa baru");
+    }
   }
 
   void _firestoreSendDataDiriMahasiswa() {
